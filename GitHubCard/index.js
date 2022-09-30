@@ -4,6 +4,19 @@
     https://api.github.com/users/<your name>
 */
 
+const URL = ('https://api.github.com/users/AsaBuckner')
+const cards = document.querySelector(".cards")
+
+axios.get(URL)
+  .then(res => {
+
+    let card = CardMaker(res.data)
+    cards.appendChild(card)
+
+  })
+  
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -27,8 +40,88 @@
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
+  const friendArray= [
+    'tetondan',
+    'dustinmyers',
+    'justsml',
+    'luishrd',
+    'bigknell'
+  ]
+
+friendArray.forEach( name => {
+
+friendURL = ('https://api.github.com/users/')
+axios.get(friendURL + name)
+  .then(res => {
+
+    let card = CardMaker(res.data)
+    cards.appendChild(card)
+
+  })
+
+})
+
+
+
+
+
+
+
+
 
 const followersArray = [];
+
+
+//create elements
+function CardMaker(obj) {
+  const cardWrapper = document.createElement('div')
+  const Profilepic = document.createElement("img")
+  const infoDiv = document.createElement("div")
+  const name = document.createElement("h3")
+  const userName =document.createElement("p")
+  const location =document.createElement("p")
+  const Profile =document.createElement("p")
+  const followers =document.createElement("p")
+  const following =document.createElement("p")
+  const bio =document.createElement("p")
+  const webAdress = document.createElement("a")
+
+  //set classes
+  cardWrapper.classList.add("card")
+  infoDiv.classList.add("card-info")
+  userName.classList.add("username")
+  name.classList.add("name")
+
+  //append everything to its designated div
+
+cardWrapper.appendChild(Profilepic)
+cardWrapper.appendChild(infoDiv)
+infoDiv.appendChild(name)
+infoDiv.appendChild(userName)
+infoDiv.appendChild(location)
+infoDiv.appendChild(Profile)
+infoDiv.appendChild(followers)
+infoDiv.appendChild(following)
+infoDiv.appendChild(bio)
+Profile.appendChild(webAdress)
+
+//
+Profilepic.setAttribute('src', obj.avatar_url)
+name.textContent = obj.name
+userName.textContent = obj.login
+location.textContent = (`Loaction: ${obj.location}`)
+webAdress.textContent = (obj.html_url)
+webAdress.href = (obj.html_url)
+Profile.textContent = (`Profile: ${webAdress}`) 
+followers.textContent =(`Followers: ${obj.followers}`)
+following.textContent = (`Following: ${obj.following}`)
+bio.textContent = (`Bio: ${obj.bio}`)
+
+console.log(webAdress)
+return cardWrapper
+}
+
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -50,11 +143,4 @@ const followersArray = [];
     </div>
 */
 
-/*
-  List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
-*/
+
